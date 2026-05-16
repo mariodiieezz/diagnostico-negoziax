@@ -137,7 +137,7 @@ export function QuestionStep({ question, answers, onAnswer, error, onEnterNext, 
       {/* Single choice */}
       {question.type === "single" && (
         <div
-          className="space-y-2"
+          className="space-y-1.5"
           onKeyDown={(e) => { if (e.key === 'Enter') onEnterNext?.() }}
           tabIndex={0}
         >
@@ -186,7 +186,7 @@ export function QuestionStep({ question, answers, onAnswer, error, onEnterNext, 
       {/* Multi choice */}
       {question.type === "multi" && (
         <div
-          className="space-y-2"
+          className="space-y-1.5"
           onKeyDown={(e) => { if (e.key === 'Enter') onEnterNext?.() }}
           tabIndex={0}
         >
@@ -244,7 +244,7 @@ export function QuestionStep({ question, answers, onAnswer, error, onEnterNext, 
               }}
               placeholder="Tu nombre completo"
               className={cn(
-                "w-full px-4 py-3.5 rounded-xl border-2 bg-card text-foreground placeholder:text-muted-foreground/60",
+                "w-full px-4 py-2.5 rounded-xl border-2 bg-card text-foreground placeholder:text-muted-foreground/60",
                 "text-sm font-medium focus:outline-none focus:border-primary transition-colors duration-200",
                 "border-border hover:border-primary/40"
               )}
@@ -264,7 +264,7 @@ export function QuestionStep({ question, answers, onAnswer, error, onEnterNext, 
               }}
               placeholder="Tu número de teléfono"
               className={cn(
-                "w-full px-4 py-3.5 rounded-xl border-2 bg-card text-foreground placeholder:text-muted-foreground/60",
+                "w-full px-4 py-2.5 rounded-xl border-2 bg-card text-foreground placeholder:text-muted-foreground/60",
                 "text-sm font-medium focus:outline-none focus:border-primary transition-colors duration-200",
                 "border-border hover:border-primary/40"
               )}
@@ -283,7 +283,7 @@ export function QuestionStep({ question, answers, onAnswer, error, onEnterNext, 
               }}
               placeholder="tu@email.com"
               className={cn(
-                "w-full px-4 py-3.5 rounded-xl border-2 bg-card text-foreground placeholder:text-muted-foreground/60",
+                "w-full px-4 py-2.5 rounded-xl border-2 bg-card text-foreground placeholder:text-muted-foreground/60",
                 "text-sm font-medium focus:outline-none focus:border-primary transition-colors duration-200",
                 "border-border hover:border-primary/40"
               )}

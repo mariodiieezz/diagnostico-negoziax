@@ -16,7 +16,7 @@ export function OptionCard({ label, selected, multi = false, onClick }: OptionCa
       type="button"
       onClick={onClick}
       className={cn(
-        "w-full flex items-center gap-3 px-4 py-3.5 rounded-xl border-2 text-left transition-all duration-200 cursor-pointer group",
+        "w-full flex items-center gap-3 px-4 py-2.5 rounded-xl border-2 text-left transition-all duration-200 cursor-pointer group",
         "hover:border-primary/50 hover:bg-primary/5",
         selected
           ? "border-primary bg-primary/8 shadow-sm"

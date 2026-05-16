@@ -11,12 +11,12 @@ export function ProgressBar({ currentStep }: ProgressBarProps) {
 
   return (
     <div className="w-full">
-      <div className="mb-2">
-        <span className="text-sm font-medium text-muted-foreground">
+      <div className="mb-2.5 sm:mb-2">
+        <span className="text-xs sm:text-sm font-medium text-muted-foreground">
           Pregunta {currentStep} de {TOTAL_STEPS}
         </span>
       </div>
-      <div className="w-full h-2 bg-border rounded-full overflow-hidden">
+      <div className="w-full h-2.5 sm:h-2 bg-border rounded-full overflow-hidden">
         <div
           className="h-full bg-primary rounded-full transition-all duration-500 ease-out"
           style={{ width: `${percentage}%` }}

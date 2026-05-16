@@ -164,17 +164,10 @@ export function MultiStepForm() {
   if (!started) {
     return (
       <div
+        className="relative flex min-h-[min(480px,82dvh)] items-center justify-center overflow-hidden rounded-xl px-5 py-10 sm:min-h-[460px] sm:rounded-2xl sm:px-8 sm:py-12"
         style={{
-          minHeight: "460px",
           background: "linear-gradient(180deg,#eaeff5 0%,#e4eaf2 100%)",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          padding: "3rem 2rem",
           fontFamily: "'DM Sans', system-ui, sans-serif",
-          position: "relative",
-          overflow: "hidden",
-          borderRadius: "1rem",
         }}
       >
         <div
@@ -208,31 +201,16 @@ export function MultiStepForm() {
             pointerEvents: "none",
           }}
         />
-        <div style={{ position: "relative", zIndex: 1, textAlign: "center", maxWidth: "440px" }}>
+        <div
+          className="relative z-[1] mx-auto max-w-[min(100%,440px)] text-center"
+        >
           <img
             src="/logo.png"
             alt="Negoziax"
-            style={{
-              width: "64px",
-              height: "64px",
-              objectFit: "contain",
-              margin: "0 auto 16px",
-            }}
+            className="mx-auto mb-4 h-12 w-12 object-contain sm:mb-4 sm:h-16 sm:w-16"
           />
           <div
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "6px",
-              background: "rgba(37,99,235,.08)",
-              color: "#2563eb",
-              fontSize: "12px",
-              fontWeight: 600,
-              padding: "6px 14px",
-              borderRadius: "999px",
-              marginBottom: "24px",
-              letterSpacing: ".02em",
-            }}
+            className="mb-5 inline-flex items-center gap-1.5 rounded-full bg-[rgba(37,99,235,.08)] px-3.5 py-1.5 text-[11px] font-semibold tracking-wide text-[#2563eb] sm:mb-6 sm:gap-1.5 sm:px-3.5 sm:py-1.5 sm:text-xs"
           >
             <span
               style={{
@@ -247,48 +225,23 @@ export function MultiStepForm() {
             Diagnóstico gratuito para tu negocio
           </div>
           <h1
-            style={{
-              fontFamily: "'Outfit', system-ui, sans-serif",
-              fontSize: "44px",
-              fontWeight: 800,
-              color: "#0f172a",
-              lineHeight: 1.1,
-              letterSpacing: "-0.02em",
-              margin: "0 0 16px",
-            }}
+            className="mb-4 font-['Outfit',system-ui,sans-serif] text-[1.625rem] font-extrabold leading-[1.15] tracking-[-0.02em] text-[#0f172a] sm:mb-4 sm:text-4xl sm:leading-[1.1] md:text-[2.75rem]"
           >
             ¿Cuánto tiempo
             <br />
             pierdes cada semana?
           </h1>
           <p
-            style={{
-              fontSize: "16px",
-              color: "#475569",
-              lineHeight: 1.6,
-              margin: "0 auto 32px",
-              maxWidth: "360px",
-            }}
+            className="mx-auto mb-8 max-w-[360px] px-0.5 text-[15px] leading-relaxed text-[#475569] sm:mb-8 sm:text-base"
           >
             Cuéntanos cómo trabajas y te ayudamos a optimizar tu negocio con un plan personalizado.
           </p>
           <button
             type="button"
             onClick={() => setStarted(true)}
+            className="mx-auto inline-flex w-full max-w-[20rem] items-center justify-center gap-2 rounded-full border-0 bg-[#2563eb] px-6 py-3.5 text-[15px] font-semibold text-white shadow-[0_0_32px_rgba(37,99,235,.45)] transition-[box-shadow,transform] duration-200 sm:w-auto sm:max-w-none sm:px-7 sm:py-3.5"
             style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "8px",
-              background: "#2563eb",
-              color: "#fff",
-              fontSize: "15px",
-              fontWeight: 600,
-              padding: "14px 28px",
-              borderRadius: "999px",
-              border: "none",
               cursor: "pointer",
-              boxShadow: "0 0 32px rgba(37,99,235,.45)",
-              transition: "box-shadow .3s, transform .2s",
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.boxShadow = "0 0 48px rgba(37,99,235,.65)"
@@ -310,7 +263,7 @@ export function MultiStepForm() {
   const isLast = currentStep === TOTAL_STEPS
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-5 sm:gap-7">
       {/* Progress */}
       <ProgressBar currentStep={currentStep} />
 
@@ -326,15 +279,17 @@ export function MultiStepForm() {
         )}
       >
         {/* Step number + question */}
-        <div className="mb-5">
-          <h2 className="text-xl font-bold text-foreground text-balance leading-snug">
+        <div className="mb-4 sm:mb-5">
+          <h2 className="text-lg font-bold text-foreground text-balance leading-snug sm:text-xl">
             {currentQuestion.question}
           </h2>
           {currentQuestion.hint && currentQuestion.type !== "text" && (
-            <p className="mt-1.5 text-sm text-muted-foreground">{currentQuestion.hint}</p>
+            <p className="mt-2 text-xs leading-relaxed text-muted-foreground sm:mt-1.5 sm:text-sm sm:leading-normal">
+              {currentQuestion.hint}
+            </p>
           )}
           {currentStep === TOTAL_STEPS && (
-            <p className="text-sm text-muted-foreground mb-2 mt-1.5">
+            <p className="mb-2 mt-2 text-xs text-muted-foreground sm:mt-1.5 sm:text-sm">
               Ya casi estás, solo necesitamos saber a quién contactar.
             </p>
           )}
@@ -352,13 +307,13 @@ export function MultiStepForm() {
       </div>
 
       {/* Navigation */}
-      <div className="flex items-center justify-between pt-2">
+      <div className="flex flex-col-reverse gap-3 pt-1 sm:flex-row sm:items-center sm:justify-between sm:gap-2 sm:pt-2">
         <button
           type="button"
           onClick={handleBack}
           disabled={currentStep === 1}
           className={cn(
-            "px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200",
+            "min-h-11 touch-manipulation rounded-xl px-4 py-2.5 text-sm font-medium transition-all duration-200 sm:min-h-0",
             currentStep === 1
               ? "text-muted-foreground/30 cursor-not-allowed"
               : "text-muted-foreground hover:text-foreground hover:bg-muted"
@@ -371,20 +326,9 @@ export function MultiStepForm() {
           type="button"
           onClick={handleNext}
           disabled={isSubmitting}
+          className="inline-flex w-full min-h-12 touch-manipulation items-center justify-center gap-2 rounded-full border-0 bg-[#2563eb] px-5 py-3.5 text-[15px] font-semibold text-white shadow-[0_0_32px_rgba(37,99,235,.45)] transition-[box-shadow,transform] duration-200 sm:w-auto sm:min-h-0 sm:px-[26px] sm:py-[13px]"
           style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: "8px",
-            background: "#2563eb",
-            color: "#fff",
-            fontSize: "15px",
-            fontWeight: 600,
-            padding: "13px 26px",
-            borderRadius: "999px",
-            border: "none",
             cursor: isSubmitting ? "not-allowed" : "pointer",
-            boxShadow: "0 0 32px rgba(37,99,235,.45)",
-            transition: "box-shadow .3s, transform .2s",
             opacity: isSubmitting ? 0.7 : 1,
           }}
           onMouseEnter={(e) => {

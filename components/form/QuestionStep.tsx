@@ -114,7 +114,7 @@ export function QuestionStep({ question, answers, onAnswer, error, onEnterNext, 
   const showOtherOption = question.allowOther !== false
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-5 sm:space-y-4">
       {/* Text question */}
       {question.type === "text" && (
         <div>
@@ -125,8 +125,8 @@ export function QuestionStep({ question, answers, onAnswer, error, onEnterNext, 
             onKeyDown={(e) => { if (e.key === 'Enter') onEnterNext?.() }}
             placeholder={question.hint || "Escribe tu respuesta..."}
             className={cn(
-              "w-full px-4 py-3.5 rounded-xl border-2 bg-card text-foreground placeholder:text-muted-foreground/60",
-              "text-sm font-medium focus:outline-none focus:border-primary transition-colors duration-200",
+              "w-full rounded-xl border-2 bg-card px-4 py-4 text-[15px] font-medium text-foreground placeholder:text-muted-foreground/60 sm:py-3.5 sm:text-sm",
+              "focus:outline-none focus:border-primary transition-colors duration-200",
               error ? "border-destructive" : "border-border hover:border-primary/40"
             )}
             aria-invalid={!!error}
@@ -137,7 +137,7 @@ export function QuestionStep({ question, answers, onAnswer, error, onEnterNext, 
       {/* Single choice */}
       {question.type === "single" && (
         <div
-          className="space-y-1.5"
+          className="space-y-2.5 sm:space-y-1.5"
           onKeyDown={(e) => { if (e.key === 'Enter') onEnterNext?.() }}
           tabIndex={0}
         >
@@ -170,8 +170,8 @@ export function QuestionStep({ question, answers, onAnswer, error, onEnterNext, 
                     onChange={(e) => handleOtherText(e.target.value)}
                     placeholder="Escribe tu respuesta..."
                     className={cn(
-                      "w-full px-4 py-3 rounded-xl border-2 bg-card text-foreground placeholder:text-muted-foreground/60",
-                      "text-sm focus:outline-none focus:border-primary transition-colors duration-200",
+                      "w-full rounded-xl border-2 bg-card px-4 py-3.5 text-[15px] text-foreground placeholder:text-muted-foreground/60 sm:text-sm",
+                      "focus:outline-none focus:border-primary transition-colors duration-200",
                       "border-primary/40"
                     )}
                     autoFocus
@@ -186,7 +186,7 @@ export function QuestionStep({ question, answers, onAnswer, error, onEnterNext, 
       {/* Multi choice */}
       {question.type === "multi" && (
         <div
-          className="space-y-1.5"
+          className="space-y-2.5 sm:space-y-1.5"
           onKeyDown={(e) => { if (e.key === 'Enter') onEnterNext?.() }}
           tabIndex={0}
         >
@@ -215,8 +215,8 @@ export function QuestionStep({ question, answers, onAnswer, error, onEnterNext, 
                     onChange={(e) => handleOtherText(e.target.value)}
                     placeholder="Escribe tu respuesta..."
                     className={cn(
-                      "w-full px-4 py-3 rounded-xl border-2 bg-card text-foreground placeholder:text-muted-foreground/60",
-                      "text-sm focus:outline-none focus:border-primary transition-colors duration-200",
+                      "w-full rounded-xl border-2 bg-card px-4 py-3.5 text-[15px] text-foreground placeholder:text-muted-foreground/60 sm:text-sm",
+                      "focus:outline-none focus:border-primary transition-colors duration-200",
                       "border-primary/40"
                     )}
                     autoFocus
@@ -230,7 +230,7 @@ export function QuestionStep({ question, answers, onAnswer, error, onEnterNext, 
 
       {/* Contact question */}
       {question.type === "contact" && (
-        <div className="space-y-3">
+        <div className="space-y-4 sm:space-y-3">
           <div>
             <label className="block text-sm font-medium text-foreground mb-1.5">
               Nombre completo <span className="text-destructive">*</span>
@@ -244,8 +244,8 @@ export function QuestionStep({ question, answers, onAnswer, error, onEnterNext, 
               }}
               placeholder="Tu nombre completo"
               className={cn(
-                "w-full px-4 py-2.5 rounded-xl border-2 bg-card text-foreground placeholder:text-muted-foreground/60",
-                "text-sm font-medium focus:outline-none focus:border-primary transition-colors duration-200",
+                "w-full rounded-xl border-2 bg-card px-4 py-3.5 text-[15px] font-medium text-foreground placeholder:text-muted-foreground/60 sm:py-2.5 sm:text-sm",
+                "focus:outline-none focus:border-primary transition-colors duration-200",
                 "border-border hover:border-primary/40"
               )}
             />
@@ -264,8 +264,8 @@ export function QuestionStep({ question, answers, onAnswer, error, onEnterNext, 
               }}
               placeholder="Tu número de teléfono"
               className={cn(
-                "w-full px-4 py-2.5 rounded-xl border-2 bg-card text-foreground placeholder:text-muted-foreground/60",
-                "text-sm font-medium focus:outline-none focus:border-primary transition-colors duration-200",
+                "w-full rounded-xl border-2 bg-card px-4 py-3.5 text-[15px] font-medium text-foreground placeholder:text-muted-foreground/60 sm:py-2.5 sm:text-sm",
+                "focus:outline-none focus:border-primary transition-colors duration-200",
                 "border-border hover:border-primary/40"
               )}
             />
@@ -283,8 +283,8 @@ export function QuestionStep({ question, answers, onAnswer, error, onEnterNext, 
               }}
               placeholder="tu@email.com"
               className={cn(
-                "w-full px-4 py-2.5 rounded-xl border-2 bg-card text-foreground placeholder:text-muted-foreground/60",
-                "text-sm font-medium focus:outline-none focus:border-primary transition-colors duration-200",
+                "w-full rounded-xl border-2 bg-card px-4 py-3.5 text-[15px] font-medium text-foreground placeholder:text-muted-foreground/60 sm:py-2.5 sm:text-sm",
+                "focus:outline-none focus:border-primary transition-colors duration-200",
                 "border-border hover:border-primary/40"
               )}
             />

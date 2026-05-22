@@ -8,10 +8,6 @@ import { SuccessScreen } from "./SuccessScreen"
 import { cn } from "@/lib/utils"
 import { ArrowRight, Loader2 } from "lucide-react"
 
-const WEBHOOK_URL =
-  process.env.NEXT_PUBLIC_WEBHOOK_URL ||
-  "https://n8n-n8n.cksi9g.easypanel.host/webhook/b38e2cba-d328-4b20-a7d5-5a5cf105ca58"
-
 interface FormAnswers {
   [key: string]: string | string[] | Record<string, string>
 }
@@ -130,13 +126,11 @@ export function MultiStepForm() {
       setIsSubmitting(true)
       try {
         const payload = buildPayload(answers)
-        if (WEBHOOK_URL) {
-          await fetch(WEBHOOK_URL, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload),
-          })
-        }
+        await fetch("/api/submit", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        })
         setSubmitted(true)
       } catch (err) {
         console.error("[v0] Webhook error:", err)

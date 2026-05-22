@@ -6,7 +6,7 @@ import { OptionCard } from "./OptionCard"
 import { cn } from "@/lib/utils"
 
 interface FormAnswers {
-  [key: string]: string | string[] | Record<string, string>
+  [key: string]: string | string[]
 }
 
 interface ContactData {
@@ -18,7 +18,7 @@ interface ContactData {
 interface QuestionStepProps {
   question: Question
   answers: FormAnswers
-  onAnswer: (questionId: string, value: string | string[] | Record<string, string>) => void
+  onAnswer: (questionId: string, value: string | string[]) => void
   error?: string
   onEnterNext?: () => void
   onAutoNext?: (questionId: string, value: string) => void
@@ -90,9 +90,9 @@ export function QuestionStep({ question, answers, onAnswer, error, onEnterNext, 
   const handleContact = (field: keyof ContactData, value: string) => {
     const current: ContactData =
       typeof answers[question.id] === "object" && !Array.isArray(answers[question.id])
-        ? (answers[question.id] as ContactData)
+        ? (answers[question.id] as unknown as ContactData)
         : {}
-    onAnswer(question.id, { ...current, [field]: value })
+    onAnswer(question.id, { ...current, [field]: value } as unknown as string)
   }
 
   const isOtherSelected =

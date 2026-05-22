@@ -96,15 +96,6 @@ export async function POST(req: NextRequest) {
       validationResult.data as Record<string, unknown>
     )
 
-    // 8. Verify webhook configuration
-    if (!"https://n8n-n8n.cksi9g.easypanel.host/webhook/b38e2cba-d328-4b20-a7d5-5a5cf105ca58") {
-      console.error("[Server] WEBHOOK_URL not configured")
-      return NextResponse.json(
-        { error: "Service temporarily unavailable" },
-        { status: 503 }
-      )
-    }
-
     // 9. Forward to webhook with timeout
     const controller = new AbortController()
     const timeoutId = setTimeout(() => controller.abort(), 10000) // 10s timeout

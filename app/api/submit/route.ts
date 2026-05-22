@@ -97,7 +97,7 @@ export async function POST(req: NextRequest) {
     )
 
     // 8. Verify webhook configuration
-    if (!process.env.WEBHOOK_URL) {
+    if (!"https://n8n-n8n.cksi9g.easypanel.host/webhook/b38e2cba-d328-4b20-a7d5-5a5cf105ca58") {
       console.error("[Server] WEBHOOK_URL not configured")
       return NextResponse.json(
         { error: "Service temporarily unavailable" },
@@ -110,11 +110,11 @@ export async function POST(req: NextRequest) {
     const timeoutId = setTimeout(() => controller.abort(), 10000) // 10s timeout
 
     try {
-      const res = await fetch(process.env.WEBHOOK_URL, {
+      const res = await fetch("https://n8n-n8n.cksi9g.easypanel.host/webhook/b38e2cba-d328-4b20-a7d5-5a5cf105ca58", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "x-webhook-secret": process.env.WEBHOOK_SECRET || "",
+          "x-webhook-secret": "webhooksecret123",
           "User-Agent": "DiagnosticoNegoziax/1.0",
         },
         body: JSON.stringify(sanitizedData),

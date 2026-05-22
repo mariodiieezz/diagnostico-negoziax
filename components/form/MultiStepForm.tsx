@@ -61,8 +61,12 @@ function validateStep(question: (typeof QUESTIONS)[0], answers: FormAnswers): st
     const digits = contact.telefono.trim().replace(/\D/g, "")
     if (digits.length !== 9) return "Introduce un teléfono válido"
     if (!contact.email?.trim()) return "El correo electrónico es obligatorio"
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    if (!emailRegex.test(contact.email.trim())) return "El correo electrónico no es válido"
+    // More strict email validation
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+    const email = contact.email.trim()
+    if (email.length > 254) return "El correo electrónico es demasiado largo"
+    if (!emailRegex.test(email)) return "El correo electrónico no es válido"
+    if (email.includes("..")) return "El correo electrónico no es válido"
   }
 
   return null
@@ -126,15 +130,39 @@ export function MultiStepForm() {
       setIsSubmitting(true)
       try {
         const payload = buildPayload(answers)
-        await fetch("/api/submit", {
+        const response = await fetch("/api/submit", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+          },
           body: JSON.stringify(payload),
         })
+
+        if (response.status === 429) {
+          // Rate limited
+          const data = await response.json()
+          setErrors({
+            submit: `Has enviado demasiadas solicitudes. Por favor, espera ${data.retryAfter || 60} segundos.`,
+          })
+          return
+        }
+
+        if (!response.ok) {
+          // Other errors
+          const data = await response.json().catch(() => ({}))
+          setErrors({
+            submit: data.error || "Error al enviar el formulario. Por favor, intenta de nuevo.",
+          })
+          return
+        }
+
+        // Success
         setSubmitted(true)
       } catch (err) {
-        console.error("[v0] Webhook error:", err)
-        setSubmitted(true) // show success regardless to avoid UX hang
+        console.error("[Form] Submission error:", err)
+        setErrors({
+          submit: "Error de conexión. Por favor, verifica tu conexión a internet e intenta de nuevo.",
+        })
       } finally {
         setIsSubmitting(false)
       }
@@ -299,6 +327,13 @@ export function MultiStepForm() {
           onAutoNext={handleAutoNext}
         />
       </div>
+
+      {/* Submission Error */}
+      {errors.submit && (
+        <div className="rounded-lg bg-red-50 border border-red-200 p-4">
+          <p className="text-sm text-red-800 font-medium">{errors.submit}</p>
+        </div>
+      )}
 
       {/* Navigation */}
       <div className="flex flex-col-reverse gap-3 pt-1 sm:flex-row sm:items-center sm:justify-between sm:gap-2 sm:pt-2">

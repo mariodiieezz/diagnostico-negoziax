@@ -1,24 +1,22 @@
 import type { Metadata } from 'next'
-import { DM_Sans, Outfit } from 'next/font/google'
+import { Poppins } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 
-const dmSans = DM_Sans({
+const poppins = Poppins({
   subsets: ['latin'],
-  weight: ['400', '500', '600'],
-  variable: '--font-dm-sans',
-})
-
-const outfit = Outfit({
-  subsets: ['latin'],
-  weight: ['700', '800'],
-  variable: '--font-outfit',
+  weight: ['400', '500', '600', '700', '800'],
+  variable: '--font-poppins',
 })
 
 export const metadata: Metadata = {
   title: 'Diagnóstico Negoziax',
   description: 'Cuestionario para conocer las herramientas digitales y necesidades de tu negocio',
   generator: 'v0.app',
+  icons: {
+    icon: '/logo.png',
+    apple: '/logo.png',
+  },
 }
 
 export default function RootLayout({
@@ -27,8 +25,13 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="es" className={`bg-background ${dmSans.variable} ${outfit.variable}`}>
+    <html lang="es" className={`bg-background ${poppins.variable}`}>
       <body className="font-sans antialiased">
+        <div className="site-bg" aria-hidden="true">
+          <div className="site-blob site-blob-1" />
+          <div className="site-blob site-blob-2" />
+          <div className="site-blob site-blob-3" />
+        </div>
         {children}
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>

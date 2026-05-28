@@ -1,6 +1,5 @@
 "use client"
 
-import { useState, useEffect } from "react"
 import { Question } from "@/lib/form-config"
 import { OptionCard } from "./OptionCard"
 import { cn } from "@/lib/utils"
@@ -25,26 +24,12 @@ interface QuestionStepProps {
 }
 
 export function QuestionStep({ question, answers, onAnswer, error, onEnterNext, onAutoNext }: QuestionStepProps) {
-  const [otherText, setOtherText] = useState("")
-  const [showOther, setShowOther] = useState(false)
-
   const currentAnswer = answers[question.id]
 
   // Safely coerce multi answers to array
   const currentMultiAnswer: string[] = question.type === "multi"
     ? (Array.isArray(currentAnswer) ? currentAnswer : [])
     : []
-
-  // Sync "Otros" visibility
-  useEffect(() => {
-    if (question.type === "single") {
-      setShowOther(currentAnswer === "Otros")
-      if (currentAnswer !== "Otros") setOtherText("")
-    } else if (question.type === "multi") {
-      setShowOther(currentMultiAnswer.includes("Otros"))
-      if (!currentMultiAnswer.includes("Otros")) setOtherText("")
-    }
-  }, [currentAnswer, currentMultiAnswer, question.type])
 
   // Single selection handler
   const handleSingle = (option: string) => {
@@ -70,7 +55,6 @@ export function QuestionStep({ question, answers, onAnswer, error, onEnterNext, 
 
   // Other text handler
   const handleOtherText = (text: string) => {
-    setOtherText(text)
     if (question.type === "single") {
       onAnswer(question.id, text ? `Otros: ${text}` : "Otros")
     } else if (question.type === "multi") {
@@ -112,9 +96,10 @@ export function QuestionStep({ question, answers, onAnswer, error, onEnterNext, 
   })()
 
   const showOtherOption = question.allowOther !== false
+  const hasOtrosOption = (question.options || []).includes("Otros")
 
   return (
-    <div className="space-y-5 sm:space-y-4">
+    <div className="space-y-3 sm:space-y-3">
       {/* Text question */}
       {question.type === "text" && (
         <div>
@@ -125,9 +110,11 @@ export function QuestionStep({ question, answers, onAnswer, error, onEnterNext, 
             onKeyDown={(e) => { if (e.key === 'Enter') onEnterNext?.() }}
             placeholder={question.hint || "Escribe tu respuesta..."}
             className={cn(
-              "w-full rounded-xl border-2 bg-card px-4 py-4 text-[15px] font-medium text-foreground placeholder:text-muted-foreground/60 sm:py-3.5 sm:text-sm",
-              "focus:outline-none focus:border-primary transition-colors duration-200",
-              error ? "border-destructive" : "border-border hover:border-primary/40"
+              "w-full rounded-xl border-2 px-4 py-2.5 text-[13px] font-medium text-foreground placeholder:text-muted-foreground/60 sm:py-2.5 sm:text-sm",
+              "bg-[rgba(255,255,255,.035)] border-[rgba(255,255,255,.16)]",
+              "hover:border-[rgba(148,163,184,.55)]",
+              "focus:outline-none focus:border-[rgba(203,213,225,.70)] focus:ring-2 focus:ring-[rgba(148,163,184,.35)] transition-colors duration-200",
+              error ? "border-destructive focus:border-destructive focus:ring-destructive/35" : ""
             )}
             aria-invalid={!!error}
           />
@@ -137,7 +124,7 @@ export function QuestionStep({ question, answers, onAnswer, error, onEnterNext, 
       {/* Single choice */}
       {question.type === "single" && (
         <div
-          className="space-y-2.5 sm:space-y-1.5"
+          className="space-y-2 sm:space-y-1.5"
           onKeyDown={(e) => { if (e.key === 'Enter') onEnterNext?.() }}
           tabIndex={0}
         >
@@ -154,7 +141,7 @@ export function QuestionStep({ question, answers, onAnswer, error, onEnterNext, 
               onClick={() => handleSingle(option)}
             />
           ))}
-          {showOtherOption && (
+          {showOtherOption && !hasOtrosOption && (
             <>
               <OptionCard
                 label="Otros"
@@ -163,16 +150,17 @@ export function QuestionStep({ question, answers, onAnswer, error, onEnterNext, 
                 onClick={() => handleSingle("Otros")}
               />
               {isOtherSelected && (
-                <div className="mt-2 animate-in slide-in-from-top-2 duration-200">
+                <div className="mt-1.5 animate-in slide-in-from-top-2 duration-200">
                   <input
                     type="text"
                     value={otherCurrentText}
                     onChange={(e) => handleOtherText(e.target.value)}
                     placeholder="Escribe tu respuesta..."
                     className={cn(
-                      "w-full rounded-xl border-2 bg-card px-4 py-3.5 text-[15px] text-foreground placeholder:text-muted-foreground/60 sm:text-sm",
-                      "focus:outline-none focus:border-primary transition-colors duration-200",
-                      "border-primary/40"
+                      "w-full rounded-xl border-2 px-4 py-2.5 text-[13px] text-foreground placeholder:text-muted-foreground/60 sm:text-sm",
+                      "bg-[rgba(255,255,255,.035)] border-[rgba(148,163,184,.45)]",
+                      "hover:border-[rgba(148,163,184,.65)]",
+                      "focus:outline-none focus:border-[rgba(203,213,225,.75)] focus:ring-2 focus:ring-[rgba(148,163,184,.35)] transition-colors duration-200"
                     )}
                     autoFocus
                   />
@@ -186,7 +174,7 @@ export function QuestionStep({ question, answers, onAnswer, error, onEnterNext, 
       {/* Multi choice */}
       {question.type === "multi" && (
         <div
-          className="space-y-2.5 sm:space-y-1.5"
+          className="space-y-2 sm:space-y-1.5"
           onKeyDown={(e) => { if (e.key === 'Enter') onEnterNext?.() }}
           tabIndex={0}
         >
@@ -199,7 +187,7 @@ export function QuestionStep({ question, answers, onAnswer, error, onEnterNext, 
               onClick={() => handleMulti(option)}
             />
           ))}
-          {showOtherOption && (
+          {showOtherOption && !hasOtrosOption && (
             <>
               <OptionCard
                 label="Otros"
@@ -208,16 +196,17 @@ export function QuestionStep({ question, answers, onAnswer, error, onEnterNext, 
                 onClick={() => handleMulti("Otros")}
               />
               {isOtherSelected && (
-                <div className="mt-2 animate-in slide-in-from-top-2 duration-200">
+                <div className="mt-1.5 animate-in slide-in-from-top-2 duration-200">
                   <input
                     type="text"
                     value={otherCurrentText}
                     onChange={(e) => handleOtherText(e.target.value)}
                     placeholder="Escribe tu respuesta..."
                     className={cn(
-                      "w-full rounded-xl border-2 bg-card px-4 py-3.5 text-[15px] text-foreground placeholder:text-muted-foreground/60 sm:text-sm",
-                      "focus:outline-none focus:border-primary transition-colors duration-200",
-                      "border-primary/40"
+                      "w-full rounded-xl border-2 px-4 py-2.5 text-[13px] text-foreground placeholder:text-muted-foreground/60 sm:text-sm",
+                      "bg-[rgba(255,255,255,.035)] border-[rgba(148,163,184,.45)]",
+                      "hover:border-[rgba(148,163,184,.65)]",
+                      "focus:outline-none focus:border-[rgba(203,213,225,.75)] focus:ring-2 focus:ring-[rgba(148,163,184,.35)] transition-colors duration-200"
                     )}
                     autoFocus
                   />
@@ -230,7 +219,7 @@ export function QuestionStep({ question, answers, onAnswer, error, onEnterNext, 
 
       {/* Contact question */}
       {question.type === "contact" && (
-        <div className="space-y-4 sm:space-y-3">
+        <div className="space-y-3 sm:space-y-3">
           <div>
             <label className="block text-sm font-medium text-foreground mb-1.5">
               Nombre completo <span className="text-destructive">*</span>
@@ -244,9 +233,10 @@ export function QuestionStep({ question, answers, onAnswer, error, onEnterNext, 
               }}
               placeholder="Tu nombre completo"
               className={cn(
-                "w-full rounded-xl border-2 bg-card px-4 py-3.5 text-[15px] font-medium text-foreground placeholder:text-muted-foreground/60 sm:py-2.5 sm:text-sm",
-                "focus:outline-none focus:border-primary transition-colors duration-200",
-                "border-border hover:border-primary/40"
+                "w-full rounded-xl border-2 px-4 py-3.5 text-[15px] font-medium text-foreground placeholder:text-muted-foreground/60 sm:py-2.5 sm:text-sm",
+                "bg-[rgba(255,255,255,.035)] border-[rgba(255,255,255,.16)]",
+                "hover:border-[rgba(148,163,184,.55)]",
+                "focus:outline-none focus:border-[rgba(203,213,225,.70)] focus:ring-2 focus:ring-[rgba(148,163,184,.35)] transition-colors duration-200"
               )}
             />
           </div>
@@ -264,9 +254,10 @@ export function QuestionStep({ question, answers, onAnswer, error, onEnterNext, 
               }}
               placeholder="Tu número de teléfono"
               className={cn(
-                "w-full rounded-xl border-2 bg-card px-4 py-3.5 text-[15px] font-medium text-foreground placeholder:text-muted-foreground/60 sm:py-2.5 sm:text-sm",
-                "focus:outline-none focus:border-primary transition-colors duration-200",
-                "border-border hover:border-primary/40"
+                "w-full rounded-xl border-2 px-4 py-3.5 text-[15px] font-medium text-foreground placeholder:text-muted-foreground/60 sm:py-2.5 sm:text-sm",
+                "bg-[rgba(255,255,255,.035)] border-[rgba(255,255,255,.16)]",
+                "hover:border-[rgba(148,163,184,.55)]",
+                "focus:outline-none focus:border-[rgba(203,213,225,.70)] focus:ring-2 focus:ring-[rgba(148,163,184,.35)] transition-colors duration-200"
               )}
             />
           </div>
@@ -283,9 +274,10 @@ export function QuestionStep({ question, answers, onAnswer, error, onEnterNext, 
               }}
               placeholder="tu@email.com"
               className={cn(
-                "w-full rounded-xl border-2 bg-card px-4 py-3.5 text-[15px] font-medium text-foreground placeholder:text-muted-foreground/60 sm:py-2.5 sm:text-sm",
-                "focus:outline-none focus:border-primary transition-colors duration-200",
-                "border-border hover:border-primary/40"
+                "w-full rounded-xl border-2 px-4 py-3.5 text-[15px] font-medium text-foreground placeholder:text-muted-foreground/60 sm:py-2.5 sm:text-sm",
+                "bg-[rgba(255,255,255,.035)] border-[rgba(255,255,255,.16)]",
+                "hover:border-[rgba(148,163,184,.55)]",
+                "focus:outline-none focus:border-[rgba(203,213,225,.70)] focus:ring-2 focus:ring-[rgba(148,163,184,.35)] transition-colors duration-200"
               )}
             />
           </div>

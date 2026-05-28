@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useCallback } from "react"
+import Image from "next/image"
 import { QUESTIONS, TOTAL_STEPS } from "@/lib/form-config"
 import { ProgressBar } from "./ProgressBar"
 import { QuestionStep } from "./QuestionStep"
@@ -158,10 +159,9 @@ export function MultiStepForm() {
   if (!started) {
     return (
       <div
-        className="relative flex min-h-[min(480px,82dvh)] items-center justify-center overflow-hidden rounded-xl px-5 py-10 sm:min-h-[460px] sm:rounded-2xl sm:px-8 sm:py-12"
+        className="relative flex h-full items-center justify-center overflow-hidden rounded-xl px-4 py-6 sm:rounded-2xl sm:px-8 sm:py-10"
         style={{
           background: "linear-gradient(180deg,#eaeff5 0%,#e4eaf2 100%)",
-          fontFamily: "'DM Sans', system-ui, sans-serif",
         }}
       >
         <div
@@ -198,10 +198,13 @@ export function MultiStepForm() {
         <div
           className="relative z-[1] mx-auto max-w-[min(100%,440px)] text-center"
         >
-          <img
+          <Image
             src="/logo.png"
             alt="Negoziax"
-            className="mx-auto mb-4 h-12 w-12 object-contain sm:mb-4 sm:h-16 sm:w-16"
+            width={96}
+            height={96}
+            priority
+            className="mx-auto mb-4 h-16 w-16 object-contain sm:mb-4 sm:h-20 sm:w-20"
           />
           <div
             className="mb-5 inline-flex items-center gap-1.5 rounded-full bg-[rgba(37,99,235,.08)] px-3.5 py-1.5 text-[11px] font-semibold tracking-wide text-[#2563eb] sm:mb-6 sm:gap-1.5 sm:px-3.5 sm:py-1.5 sm:text-xs"
@@ -219,34 +222,25 @@ export function MultiStepForm() {
             Diagnóstico gratuito para tu negocio
           </div>
           <h1
-            className="mb-4 font-['Outfit',system-ui,sans-serif] text-[1.625rem] font-extrabold leading-[1.15] tracking-[-0.02em] text-[#0f172a] sm:mb-4 sm:text-4xl sm:leading-[1.1] md:text-[2.75rem]"
+            className="mb-3 w-full text-center text-[clamp(1.25rem,7.2vw,1.4rem)] font-extrabold leading-[1.15] tracking-[-0.02em] text-[#0f172a] sm:mb-4 sm:text-3xl sm:leading-[1.1] md:text-[2.25rem]"
           >
-            ¿Cuánto tiempo
-            <br />
-            pierdes cada semana?
+            <span className="block whitespace-nowrap">¿Cuánto tiempo&nbsp;pierdes</span>
+            <span className="block">cada semana?</span>
           </h1>
           <p
-            className="mx-auto mb-8 max-w-[360px] px-0.5 text-[15px] leading-relaxed text-[#475569] sm:mb-8 sm:text-base"
+            className="mx-auto mb-5 max-w-[360px] px-0.5 text-[13px] leading-relaxed text-[#475569] sm:mb-7 sm:text-sm"
           >
             Cuéntanos cómo trabajas y te ayudamos a optimizar tu negocio con un plan personalizado.
           </p>
           <button
             type="button"
             onClick={() => setStarted(true)}
-            className="mx-auto inline-flex w-full max-w-[20rem] items-center justify-center gap-2 rounded-full border-0 bg-[#2563eb] px-6 py-3.5 text-[15px] font-semibold text-white shadow-[0_0_32px_rgba(37,99,235,.45)] transition-[box-shadow,transform] duration-200 sm:w-auto sm:max-w-none sm:px-7 sm:py-3.5"
+            className="nx-cta mx-auto w-full max-w-[20rem] gap-2 sm:w-auto sm:max-w-none"
             style={{
               cursor: "pointer",
             }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.boxShadow = "0 0 48px rgba(37,99,235,.65)"
-              e.currentTarget.style.transform = "translateY(-1px)"
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.boxShadow = "0 0 32px rgba(37,99,235,.45)"
-              e.currentTarget.style.transform = "translateY(0)"
-            }}
           >
-            Comenzar diagnóstico
+            Iniciar
             <ArrowRight style={{ width: "18px", height: "18px" }} />
           </button>
         </div>
@@ -257,14 +251,14 @@ export function MultiStepForm() {
   const isLast = currentStep === TOTAL_STEPS
 
   return (
-    <div className="flex flex-col gap-5 sm:gap-7">
+    <div className="flex flex-col gap-2.5 sm:gap-3">
       {/* Progress */}
       <ProgressBar currentStep={currentStep} />
 
       {/* Question card */}
       <div
         className={cn(
-          "transition-all duration-200",
+          "flex flex-col transition-all duration-200 overflow-hidden",
           isAnimating
             ? direction === "forward"
               ? "opacity-0 translate-x-4"
@@ -273,44 +267,44 @@ export function MultiStepForm() {
         )}
       >
         {/* Step number + question */}
-        <div className="mb-4 sm:mb-5">
-          <h2 className="text-lg font-bold text-foreground text-balance leading-snug sm:text-xl">
+        <div className="mb-2 shrink-0 sm:mb-2.5">
+          <h2 className="text-[15px] font-bold text-foreground text-balance leading-snug sm:text-base">
             {currentQuestion.question}
           </h2>
           {currentQuestion.hint && currentQuestion.type !== "text" && (
-            <p className="mt-2 text-xs leading-relaxed text-muted-foreground sm:mt-1.5 sm:text-sm sm:leading-normal">
+            <p className="mt-1.5 text-[11px] leading-relaxed text-muted-foreground sm:mt-1.5 sm:text-xs sm:leading-normal">
               {currentQuestion.hint}
             </p>
           )}
           {currentStep === TOTAL_STEPS && (
-            <p className="mb-2 mt-2 text-xs text-muted-foreground sm:mt-1.5 sm:text-sm">
+            <p className="mb-1.5 mt-1.5 text-[11px] text-muted-foreground sm:mt-1.5 sm:text-xs">
               Ya casi estás, solo necesitamos saber a quién contactar.
             </p>
           )}
         </div>
 
-        {/* Step content */}
-        <QuestionStep
-          question={currentQuestion}
-          answers={answers}
-          onAnswer={handleAnswer}
-          error={errors[currentQuestion.id]}
-          onEnterNext={handleNext}
-          onAutoNext={handleAutoNext}
-        />
+        {/* Step content (no internal scrollbar) */}
+        <div className="pr-1 pb-2">
+          <QuestionStep
+            question={currentQuestion}
+            answers={answers}
+            onAnswer={handleAnswer}
+            error={errors[currentQuestion.id]}
+            onEnterNext={handleNext}
+            onAutoNext={handleAutoNext}
+          />
+        </div>
       </div>
 
       {/* Navigation */}
-      <div className="flex flex-col-reverse gap-3 pt-1 sm:flex-row sm:items-center sm:justify-between sm:gap-2 sm:pt-2">
+      <div className="flex flex-col-reverse gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-2">
         <button
           type="button"
           onClick={handleBack}
           disabled={currentStep === 1}
           className={cn(
-            "min-h-11 touch-manipulation rounded-xl px-4 py-2.5 text-sm font-medium transition-all duration-200 sm:min-h-0",
-            currentStep === 1
-              ? "text-muted-foreground/30 cursor-not-allowed"
-              : "text-muted-foreground hover:text-foreground hover:bg-muted"
+            "nx-cta nx-cta--compact nx-cta--secondary w-full min-h-9 touch-manipulation gap-2 sm:w-auto sm:min-h-0",
+            currentStep === 1 ? "opacity-40 cursor-not-allowed pointer-events-none" : ""
           )}
         >
           ← Anterior
@@ -320,19 +314,10 @@ export function MultiStepForm() {
           type="button"
           onClick={handleNext}
           disabled={isSubmitting}
-          className="inline-flex w-full min-h-12 touch-manipulation items-center justify-center gap-2 rounded-full border-0 bg-[#2563eb] px-5 py-3.5 text-[15px] font-semibold text-white shadow-[0_0_32px_rgba(37,99,235,.45)] transition-[box-shadow,transform] duration-200 sm:w-auto sm:min-h-0 sm:px-[26px] sm:py-[13px]"
+          className="nx-cta nx-cta--compact w-full min-h-9 touch-manipulation gap-2 sm:w-auto sm:min-h-0"
           style={{
             cursor: isSubmitting ? "not-allowed" : "pointer",
             opacity: isSubmitting ? 0.7 : 1,
-          }}
-          onMouseEnter={(e) => {
-            if (isSubmitting) return
-            e.currentTarget.style.boxShadow = "0 0 48px rgba(37,99,235,.65)"
-            e.currentTarget.style.transform = "translateY(-1px)"
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.boxShadow = "0 0 32px rgba(37,99,235,.45)"
-            e.currentTarget.style.transform = "translateY(0)"
           }}
         >
           {isSubmitting ? (

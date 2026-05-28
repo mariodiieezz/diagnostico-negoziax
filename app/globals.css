@@ -238,6 +238,36 @@
   box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.35), 0 2px 12px rgba(37, 99, 235, 0.28);
 }
 
+.nx-cta--pulse {
+  position: relative;
+  isolation: isolate;
+}
+
+.nx-cta--pulse::before {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: inherit;
+  border: 2px solid rgba(37, 99, 235, 0.55);
+  opacity: 0.9;
+  animation: nx-cta-ripple 1.35s ease-out infinite;
+  z-index: -1;
+}
+
+@keyframes nx-cta-ripple {
+  0% {
+    transform: scale(0.92);
+    opacity: 0.0;
+  }
+  10% {
+    opacity: 0.75;
+  }
+  100% {
+    transform: scale(1.22);
+    opacity: 0.0;
+  }
+}
+
 .nx-cta--compact {
   padding: 0.5rem 0.9rem;
   font-size: 13px;

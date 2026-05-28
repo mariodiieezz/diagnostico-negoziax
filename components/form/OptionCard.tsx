@@ -16,7 +16,7 @@ export function OptionCard({ label, selected, multi = false, onClick }: OptionCa
       type="button"
       onClick={onClick}
       className={cn(
-        "w-full flex items-center gap-3 px-4 py-2 sm:py-2 rounded-xl border-2 text-left transition-all duration-200 cursor-pointer group touch-manipulation",
+        "w-full min-h-11 flex items-start sm:items-center gap-3 px-4 py-3 sm:py-2 rounded-xl border-2 text-left transition-all duration-200 cursor-pointer group touch-manipulation",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#60a5fa]/80 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent",
         "hover:border-[rgba(203,213,225,.55)] hover:bg-[rgba(255,255,255,.05)] active:bg-[rgba(255,255,255,.06)]",
         selected
@@ -27,7 +27,7 @@ export function OptionCard({ label, selected, multi = false, onClick }: OptionCa
     >
       <span
         className={cn(
-          "flex-shrink-0 w-5 h-5 mt-0.5 sm:mt-0 rounded-full border-2 flex items-center justify-center transition-all duration-200",
+          "flex-shrink-0 w-5 h-5 mt-0.5 sm:mt-0.5 rounded-full border-2 flex items-center justify-center transition-all duration-200",
           multi ? "rounded-md" : "rounded-full",
           selected
             ? "border-[rgba(203,213,225,.80)] bg-[rgba(203,213,225,.22)]"

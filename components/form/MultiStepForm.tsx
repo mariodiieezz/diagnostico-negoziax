@@ -235,7 +235,7 @@ export function MultiStepForm() {
           <button
             type="button"
             onClick={() => setStarted(true)}
-            className="nx-cta mx-auto w-full max-w-[20rem] gap-2 sm:w-auto sm:max-w-none"
+            className="nx-cta nx-cta--pulse mx-auto w-full max-w-[20rem] gap-2 sm:w-auto sm:max-w-none"
             style={{
               cursor: "pointer",
             }}

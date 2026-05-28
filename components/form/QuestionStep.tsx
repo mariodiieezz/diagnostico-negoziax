@@ -110,7 +110,7 @@ export function QuestionStep({ question, answers, onAnswer, error, onEnterNext, 
             onKeyDown={(e) => { if (e.key === 'Enter') onEnterNext?.() }}
             placeholder={question.hint || "Escribe tu respuesta..."}
             className={cn(
-              "w-full rounded-xl border-2 px-4 py-2.5 text-[13px] font-medium text-foreground placeholder:text-muted-foreground/60 sm:py-2.5 sm:text-sm",
+              "w-full rounded-xl border-2 px-4 py-3 text-[15px] font-medium text-foreground placeholder:text-muted-foreground/60 sm:py-2.5 sm:text-sm",
               "bg-[rgba(255,255,255,.035)] border-[rgba(255,255,255,.16)]",
               "hover:border-[rgba(148,163,184,.55)]",
               "focus:outline-none focus:border-[rgba(203,213,225,.70)] focus:ring-2 focus:ring-[rgba(148,163,184,.35)] transition-colors duration-200",
@@ -124,7 +124,7 @@ export function QuestionStep({ question, answers, onAnswer, error, onEnterNext, 
       {/* Single choice */}
       {question.type === "single" && (
         <div
-          className="space-y-2 sm:space-y-1.5"
+          className="max-h-[52dvh] space-y-2 overflow-auto pr-1 nx-scroll-hidden sm:max-h-none sm:space-y-1.5"
           onKeyDown={(e) => { if (e.key === 'Enter') onEnterNext?.() }}
           tabIndex={0}
         >
@@ -157,7 +157,7 @@ export function QuestionStep({ question, answers, onAnswer, error, onEnterNext, 
                     onChange={(e) => handleOtherText(e.target.value)}
                     placeholder="Escribe tu respuesta..."
                     className={cn(
-                      "w-full rounded-xl border-2 px-4 py-2.5 text-[13px] text-foreground placeholder:text-muted-foreground/60 sm:text-sm",
+                      "w-full rounded-xl border-2 px-4 py-3 text-[15px] text-foreground placeholder:text-muted-foreground/60 sm:py-2.5 sm:text-sm",
                       "bg-[rgba(255,255,255,.035)] border-[rgba(148,163,184,.45)]",
                       "hover:border-[rgba(148,163,184,.65)]",
                       "focus:outline-none focus:border-[rgba(203,213,225,.75)] focus:ring-2 focus:ring-[rgba(148,163,184,.35)] transition-colors duration-200"
@@ -174,7 +174,7 @@ export function QuestionStep({ question, answers, onAnswer, error, onEnterNext, 
       {/* Multi choice */}
       {question.type === "multi" && (
         <div
-          className="space-y-2 sm:space-y-1.5"
+          className="max-h-[52dvh] space-y-2 overflow-auto pr-1 nx-scroll-hidden sm:max-h-none sm:space-y-1.5"
           onKeyDown={(e) => { if (e.key === 'Enter') onEnterNext?.() }}
           tabIndex={0}
         >
@@ -203,7 +203,7 @@ export function QuestionStep({ question, answers, onAnswer, error, onEnterNext, 
                     onChange={(e) => handleOtherText(e.target.value)}
                     placeholder="Escribe tu respuesta..."
                     className={cn(
-                      "w-full rounded-xl border-2 px-4 py-2.5 text-[13px] text-foreground placeholder:text-muted-foreground/60 sm:text-sm",
+                      "w-full rounded-xl border-2 px-4 py-3 text-[15px] text-foreground placeholder:text-muted-foreground/60 sm:py-2.5 sm:text-sm",
                       "bg-[rgba(255,255,255,.035)] border-[rgba(148,163,184,.45)]",
                       "hover:border-[rgba(148,163,184,.65)]",
                       "focus:outline-none focus:border-[rgba(203,213,225,.75)] focus:ring-2 focus:ring-[rgba(148,163,184,.35)] transition-colors duration-200"
@@ -246,6 +246,8 @@ export function QuestionStep({ question, answers, onAnswer, error, onEnterNext, 
             </label>
             <input
               type="tel"
+              inputMode="numeric"
+              autoComplete="tel"
               maxLength={9}
               value={(contactData as ContactData).telefono || ""}
               onChange={(e) => handleContact("telefono", e.target.value)}

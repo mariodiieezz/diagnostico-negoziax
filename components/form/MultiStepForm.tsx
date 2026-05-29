@@ -38,7 +38,13 @@ function validateStep(question: (typeof QUESTIONS)[0], answers: FormAnswers): st
     const str = typeof answer === "string" ? answer : ""
     if (question.allowOther === false) {
       if (!str.trim()) return "Campo obligatorio"
-      if (str === "Otros" || str.startsWith("Otros:")) return "Campo obligatorio"
+      if (str === "Otro" || str === "Otros") return "Por favor, especifica tu respuesta"
+      if (str.startsWith("Otro:") && !str.replace(/^Otro:\s*/, "").trim()) {
+        return "Por favor, especifica tu respuesta"
+      }
+      if (str.startsWith("Otros:") && !str.replace(/^Otros:\s*/, "").trim()) {
+        return "Por favor, especifica tu respuesta"
+      }
       return null
     }
     if (!answer || str.trim() === "" || answer === "Otros") {
@@ -230,7 +236,7 @@ export function MultiStepForm() {
           <p
             className="mx-auto mb-5 max-w-[360px] px-0.5 text-[13px] leading-relaxed text-[#475569] sm:mb-7 sm:text-sm"
           >
-            Cuéntanos cómo trabajas y te ayudamos a optimizar tu negocio con un plan personalizado.
+            En 3 minutos cuéntanos cómo trabajas y te ayudamos a optimizar tu negocio con un plan personalizado.
           </p>
           <button
             type="button"
@@ -271,14 +277,13 @@ export function MultiStepForm() {
           <h2 className="text-[15px] font-bold text-foreground text-balance leading-snug sm:text-base">
             {currentQuestion.question}
           </h2>
-          {currentQuestion.hint && currentQuestion.type !== "text" && (
+          {currentQuestion.type !== "text" &&
+            (currentQuestion.hint || currentQuestion.type === "multi") && (
             <p className="mt-1.5 text-[11px] leading-relaxed text-muted-foreground sm:mt-1.5 sm:text-xs sm:leading-normal">
-              {currentQuestion.hint}
-            </p>
-          )}
-          {currentStep === TOTAL_STEPS && (
-            <p className="mb-1.5 mt-1.5 text-[11px] text-muted-foreground sm:mt-1.5 sm:text-xs">
-              Ya casi estás, solo necesitamos saber a quién contactar.
+              {currentQuestion.hint ??
+                (currentQuestion.type === "multi"
+                  ? "Puedes elegir más de una opción"
+                  : "")}
             </p>
           )}
         </div>

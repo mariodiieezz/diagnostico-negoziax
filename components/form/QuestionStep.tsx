@@ -33,7 +33,7 @@ export function QuestionStep({ question, answers, onAnswer, error, onEnterNext, 
 
   // Single selection handler
   const handleSingle = (option: string) => {
-    if (option === "Otros") {
+    if (option === "Otros" || option === "Otro") {
       onAnswer(question.id, option)
     } else {
       onAnswer(question.id, option)
@@ -55,8 +55,9 @@ export function QuestionStep({ question, answers, onAnswer, error, onEnterNext, 
 
   // Other text handler
   const handleOtherText = (text: string) => {
+    const otherLabel = (question.options || []).includes("Otro") ? "Otro" : "Otros"
     if (question.type === "single") {
-      onAnswer(question.id, text ? `Otros: ${text}` : "Otros")
+      onAnswer(question.id, text ? `${otherLabel}: ${text}` : otherLabel)
     } else if (question.type === "multi") {
       const current = (Array.isArray(currentAnswer) ? currentAnswer : []).filter(
         (o) => !o.startsWith("Otros:")
@@ -82,13 +83,17 @@ export function QuestionStep({ question, answers, onAnswer, error, onEnterNext, 
   const isOtherSelected =
     question.type === "single"
       ? typeof currentAnswer === "string" &&
-        (currentAnswer === "Otros" || currentAnswer?.startsWith("Otros:"))
+        (currentAnswer === "Otros" ||
+          currentAnswer === "Otro" ||
+          currentAnswer?.startsWith("Otros:") ||
+          currentAnswer?.startsWith("Otro:"))
       : currentMultiAnswer.some((v) => v === "Otros" || v.startsWith("Otros:"))
 
   const otherCurrentText = (() => {
     if (question.type === "single") {
       const val = currentAnswer as string
-      return val?.startsWith("Otros:") ? val.replace("Otros: ", "") : ""
+      if (val?.startsWith("Otro:")) return val.replace(/^Otro:\s*/, "")
+      return val?.startsWith("Otros:") ? val.replace(/^Otros:\s*/, "") : ""
     } else {
       const otrosEntry = currentMultiAnswer.find((v) => v.startsWith("Otros:"))
       return otrosEntry ? otrosEntry.replace("Otros: ", "") : ""
@@ -97,6 +102,7 @@ export function QuestionStep({ question, answers, onAnswer, error, onEnterNext, 
 
   const showOtherOption = question.allowOther !== false
   const hasOtrosOption = (question.options || []).includes("Otros")
+  const hasOtroOption = (question.options || []).includes("Otro")
 
   return (
     <div className="space-y-3 sm:space-y-3">
@@ -135,13 +141,31 @@ export function QuestionStep({ question, answers, onAnswer, error, onEnterNext, 
               selected={
                 typeof currentAnswer === "string" &&
                 (currentAnswer === option ||
-                  (currentAnswer?.startsWith("Otros:") && option === "Otros"))
+                  (currentAnswer?.startsWith("Otros:") && option === "Otros") ||
+                  (currentAnswer?.startsWith("Otro:") && option === "Otro"))
               }
               multi={false}
               onClick={() => handleSingle(option)}
             />
           ))}
-          {showOtherOption && !hasOtrosOption && (
+          {hasOtroOption && isOtherSelected && (
+            <div className="mt-1.5 animate-in slide-in-from-top-2 duration-200">
+              <input
+                type="text"
+                value={otherCurrentText}
+                onChange={(e) => handleOtherText(e.target.value)}
+                placeholder="Escribe tu sector..."
+                className={cn(
+                  "w-full rounded-xl border-2 px-4 py-3 text-[15px] text-foreground placeholder:text-muted-foreground/60 sm:py-2.5 sm:text-sm",
+                  "bg-[rgba(255,255,255,.035)] border-[rgba(148,163,184,.45)]",
+                  "hover:border-[rgba(148,163,184,.65)]",
+                  "focus:outline-none focus:border-[rgba(203,213,225,.75)] focus:ring-2 focus:ring-[rgba(148,163,184,.35)] transition-colors duration-200"
+                )}
+                autoFocus
+              />
+            </div>
+          )}
+          {showOtherOption && !hasOtrosOption && !hasOtroOption && (
             <>
               <OptionCard
                 label="Otros"
@@ -274,7 +298,7 @@ export function QuestionStep({ question, answers, onAnswer, error, onEnterNext, 
               onKeyDown={(e) => {
                 if (e.key === "Enter") onEnterNext?.()
               }}
-              placeholder="tu@email.com"
+              placeholder="tu@gmail.com"
               className={cn(
                 "w-full rounded-xl border-2 px-4 py-3.5 text-[15px] font-medium text-foreground placeholder:text-muted-foreground/60 sm:py-2.5 sm:text-sm",
                 "bg-[rgba(255,255,255,.035)] border-[rgba(255,255,255,.16)]",
